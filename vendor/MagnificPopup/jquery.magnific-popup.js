@@ -1,6 +1,4 @@
-/*! Magnific Popup - v1.1.0 - 2016-02-20
-* http://dimsemenov.com/plugins/magnific-popup/
-* Copyright (c) 2016 Dmitry Semenov; */
+
 ;(function (factory) { 
 if (typeof define === 'function' && define.amd) { 
  // AMD. Register as an anonymous module. 
@@ -14,17 +12,8 @@ if (typeof define === 'function' && define.amd) {
  } 
  }(function($) { 
 
-/*>>core*/
-/**
- * 
- * Magnific Popup Core JS file
- * 
- */
 
 
-/**
- * Private static constants
- */
 var CLOSE_EVENT = 'Close',
 	BEFORE_CLOSE_EVENT = 'BeforeClose',
 	AFTER_CLOSE_EVENT = 'AfterClose',
@@ -39,11 +28,8 @@ var CLOSE_EVENT = 'Close',
 	PREVENT_CLOSE_CLASS = 'mfp-prevent-close';
 
 
-/**
- * Private vars 
- */
-/*jshint -W079 */
-var mfp, // As we have only one instance of MagnificPopup object, we define it locally to not to use 'this'
+
+var mfp, 
 	MagnificPopup = function(){},
 	_isJQ = !!(window.jQuery),
 	_prevStatus,
@@ -54,9 +40,7 @@ var mfp, // As we have only one instance of MagnificPopup object, we define it l
 	_currPopupType;
 
 
-/**
- * Private functions
- */
+
 var _mfpOn = function(name, f) {
 		mfp.ev.on(NS + name + EVENT_NS, f);
 	},
@@ -94,7 +78,7 @@ var _mfpOn = function(name, f) {
 		}
 		return mfp.currTemplate.closeBtn;
 	},
-	// Initialize Magnific Popup only when called at least once
+
 	_checkInstance = function() {
 		if(!$.magnificPopup.instance) {
 			/*jshint -W020 */
@@ -103,7 +87,7 @@ var _mfpOn = function(name, f) {
 			$.magnificPopup.instance = mfp;
 		}
 	},
-	// CSS transition detection, http://stackoverflow.com/questions/7264899/detect-css-transitions-using-javascript-and-without-modernizr
+	
 	supportsTransitions = function() {
 		var s = document.createElement('p').style, // 's' for style. better to create an element if body yet to exist
 			v = ['ms','O','Moz','Webkit']; // 'v' for vendor
@@ -179,7 +163,7 @@ MagnificPopup.prototype = {
 			mfp.index = data.index || 0;
 		}
 
-		// if popup is already opened - we just update the content
+	
 		if(mfp.isOpen) {
 			mfp.updateItemHTML();
 			return;
@@ -215,8 +199,7 @@ MagnificPopup.prototype = {
 		}
 		
 
-		// Building markup
-		// main containers are created only once
+		
 		if(!mfp.bgOverlay) {
 
 			// Dark overlay
@@ -250,7 +233,7 @@ MagnificPopup.prototype = {
 
 
 		if(mfp.st.showCloseBtn) {
-			// Close button
+			
 			if(!mfp.st.closeBtnInside) {
 				mfp.wrap.append( _getCloseBtn() );
 			} else {
@@ -289,7 +272,7 @@ MagnificPopup.prototype = {
 		
 
 		if(mfp.st.enableEscapeKey) {
-			// Close on ESC key
+			
 			_document.on('keyup' + EVENT_NS, function(e) {
 				if(e.keyCode === 27) {
 					mfp.close();
@@ -310,7 +293,7 @@ MagnificPopup.prototype = {
 			mfp.wrap.addClass(_wrapClasses);
 
 
-		// this triggers recalculation of layout, so we get it once to not to trigger twice
+		
 		var windowHeight = mfp.wH = _window.height();
 
 		
@@ -344,21 +327,21 @@ MagnificPopup.prototype = {
 			mfp._addClassToMFP( classesToadd );
 		}
 
-		// add content
+		
 		mfp.updateItemHTML();
 
 		_mfpTrigger('BuildControls');
 
-		// remove scrollbar, add margin e.t.c
+		
 		$('html').css(windowStyles);
 		
-		// add everything to DOM
+		
 		mfp.bgOverlay.add(mfp.wrap).prependTo( mfp.st.prependTo || $(document.body) );
 
-		// Save last focused element
+		
 		mfp._lastFocusedEl = document.activeElement;
 		
-		// Wait for next cycle to allow CSS transition
+		
 		setTimeout(function() {
 			
 			if(mfp.content) {
@@ -369,7 +352,7 @@ MagnificPopup.prototype = {
 				mfp.bgOverlay.addClass(READY_CLASS);
 			}
 			
-			// Trap the focus in popup
+			
 			_document.on('focusin' + EVENT_NS, mfp._onFocusIn);
 
 		}, 16);
@@ -381,9 +364,7 @@ MagnificPopup.prototype = {
 		return data;
 	},
 
-	/**
-	 * Closes the popup
-	 */
+	
 	close: function() {
 		if(!mfp.isOpen) return;
 		_mfpTrigger(BEFORE_CLOSE_EVENT);
@@ -400,9 +381,7 @@ MagnificPopup.prototype = {
 		}
 	},
 
-	/**
-	 * Helper for close() function
-	 */
+	
 	_close: function() {
 		_mfpTrigger(CLOSE_EVENT);
 
@@ -431,12 +410,12 @@ MagnificPopup.prototype = {
 		_document.off('keyup' + EVENT_NS + ' focusin' + EVENT_NS);
 		mfp.ev.off(EVENT_NS);
 
-		// clean up DOM elements that aren't removed
+		
 		mfp.wrap.attr('class', 'mfp-wrap').removeAttr('style');
 		mfp.bgOverlay.attr('class', 'mfp-bg');
 		mfp.container.attr('class', 'mfp-container');
 
-		// remove close button from target element
+		
 		if(mfp.st.showCloseBtn &&
 		(!mfp.st.closeBtnInside || mfp.currTemplate[mfp.currItem.type] === true)) {
 			if(mfp.currTemplate.closeBtn)
@@ -475,9 +454,7 @@ MagnificPopup.prototype = {
 
 	},
 
-	/**
-	 * Set content of popup based on current index
-	 */
+	
 	updateItemHTML: function() {
 		var item = mfp.items[mfp.index];
 
@@ -494,9 +471,7 @@ MagnificPopup.prototype = {
 		var type = item.type;
 
 		_mfpTrigger('BeforeChange', [mfp.currItem ? mfp.currItem.type : '', type]);
-		// BeforeChange event works like so:
-		// _mfpOn('BeforeChange', function(e, prevType, newType) { });
-
+		
 		mfp.currItem = item;
 
 		if(!mfp.currTemplate[type]) {
@@ -508,7 +483,7 @@ MagnificPopup.prototype = {
 			if(markup) {
 				mfp.currTemplate[type] = $(markup);
 			} else {
-				// if there is no markup found we just define that template is parsed
+				
 				mfp.currTemplate[type] = true;
 			}
 		}
@@ -525,23 +500,21 @@ MagnificPopup.prototype = {
 		_mfpTrigger(CHANGE_EVENT, item);
 		_prevContentType = item.type;
 
-		// Append container back after its content changed
+		
 		mfp.container.prepend(mfp.contentContainer);
 
 		_mfpTrigger('AfterChange');
 	},
 
 
-	/**
-	 * Set HTML content of popup
-	 */
+	
 	appendContent: function(newContent, type) {
 		mfp.content = newContent;
 
 		if(newContent) {
 			if(mfp.st.showCloseBtn && mfp.st.closeBtnInside &&
 				mfp.currTemplate[type] === true) {
-				// if there is no markup, we just append close button element inside
+				
 				if(!mfp.content.find('.mfp-close').length) {
 					mfp.content.append(_getCloseBtn());
 				}
@@ -559,10 +532,7 @@ MagnificPopup.prototype = {
 	},
 
 
-	/**
-	 * Creates Magnific Popup data object based on given data
-	 * @param  {int} index Index of item to parse
-	 */
+	
 	parseEl: function(index) {
 		var item = mfp.items[index],
 			type;
@@ -601,9 +571,7 @@ MagnificPopup.prototype = {
 	},
 
 
-	/**
-	 * Initializes single popup or a group of popups
-	 */
+	
 	addGroup: function(el, options) {
 		var eHandler = function(e) {
 			e.mfpEl = this;
@@ -655,7 +623,7 @@ MagnificPopup.prototype = {
 		if(e.type) {
 			e.preventDefault();
 
-			// This will prevent popup from closing if element is inside and popup is already opened
+			
 			if(mfp.isOpen) {
 				e.stopPropagation();
 			}
@@ -669,9 +637,7 @@ MagnificPopup.prototype = {
 	},
 
 
-	/**
-	 * Updates text on preloader
-	 */
+	
 	updateStatus: function(status, text) {
 
 		if(mfp.preloader) {
@@ -687,7 +653,7 @@ MagnificPopup.prototype = {
 				status: status,
 				text: text
 			};
-			// allows to modify status
+			
 			_mfpTrigger('UpdateStatus', data);
 
 			status = data.status;
@@ -705,11 +671,6 @@ MagnificPopup.prototype = {
 	},
 
 
-	/*
-		"Private" helpers that aren't private at all
-	 */
-	// Check to close popup or not
-	// "target" is an element that was clicked
 	_checkIfClose: function(target) {
 
 		if($(target).hasClass(PREVENT_CLOSE_CLASS)) {
@@ -723,12 +684,12 @@ MagnificPopup.prototype = {
 			return true;
 		} else {
 
-			// We close the popup if click is on close button or on preloader. Or if there is no content.
+			
 			if(!mfp.content || $(target).hasClass('mfp-close') || (mfp.preloader && target === mfp.preloader[0]) ) {
 				return true;
 			}
 
-			// if click is outside the content
+	
 			if(  (target !== mfp.content[0] && !$.contains(mfp.content[0], target))  ) {
 				if(closeOnBg) {
 					// last check, if the clicked element is in DOM, (in case it's removed onclick)
